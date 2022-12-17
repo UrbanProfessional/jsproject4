@@ -9,54 +9,60 @@ function setBugPosition(ele)
 {
 
 }
+
 function moveBug(ele)
 {
     let i = 0;
     let direction = false;
     let timer = setInterval(() =>{
         
-        switch (moveDirection())
-        {
-             case 0:  
-                ele.style.left = i + "%"; 
-                break;
-             case 1:  
-                ele.style.right = i + "%"; 
-                break;
-             case 2:  
-                ele.style.top = i + "%";
-                break;
-             case 3:  
-                ele.style.bottom = i + "%"; 
-                break;
-        }
-
         
-        // limit to 85% of the page
-
-        if (i < 60 && !direction)
-        {
-            i+=1;
-        }
-        else
-        {
-            direction = true;
-             i += -1;
-             if (i <= 0)
-             {
-                direction = false;
-                console.log(i)
-             }
-        }
+        translate(ele, moveDirection(), moveDirection())
+   
+        
+        // limit to 70% of the page
+        // if (i < 70 && !direction)
+        // {
+        //     i+=1;
+        // }
+        // else
+        // {
+        //     direction = true;
+        //     i += -1;
+        //     if (i <= 0)
+        //     {
+        //         direction = false;
+        //     }
+        // }
        
         
-    }, 30)
+    }, 50)
 }
-
+function translate( ele, x, y )
+ {
+    var left = ele.style.left,
+        top = ele.style.top,
+        dx = left - x,
+        dy = top - y,
+        i = 1,
+        count = 50,
+        delay = 20;
+    
+    function loop() 
+    {
+        if ( i >= count ) { return; }
+        i += 1;
+        ele.style.left = ( left - ( dx * i / count ) ).toFixed(0) + '%';
+        ele.style.top = ( top - ( dy * i / count ) ).toFixed(0) + '%';
+        setTimeout( loop, delay );
+    }
+    
+    loop();
+}
 function moveDirection()
 {
 
-    return Math.floor(Math.random() * 4);
+    return Math.floor(Math.random() * 70);
 }
 
 document.addEventListener("DOMContentLoaded", function(event)
