@@ -6,37 +6,42 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var bugSize = 200;
     var wrapperWidth = getComputedStyle(wrapper).width.split('px')[0];
     var wrapperHeight = getComputedStyle(wrapper).height.split('px')[0];
-    var x = wrapperWidth / 2;
-    var y = wrapperHeight - 200;
-    var dx = 30;
-    var dy = -10;
-    console.log(wrapperHeight)
-    console.log(x)
-
-
+    var dx = 2;
+    var dy = -2;
+    var bugsList = [];
+    var i = 0;
     for (let bug of bugs) {
+
         bug.addEventListener('click', function (event) {
             splat(this);
 
         });
-
-        moveBug(bug);
+        let bugObject = {
+            x: (wrapperWidth / 2),
+            y: wrapperHeight - 200,
+            index: i
+        }
+        bugsList.push(bugObject);
+        console.log(bugsList[bugObject.index].x)
+        moveBug(bug, bugObject.index);
+        i++;
     }
 
     function splat(ele) {
         console.log('splat')
         ele.style.display = "none";
     }
-    function moveBug(ele) {
+    function moveBug(ele, index) { 
+    
         let timer = setInterval(() => {
-            translate(ele)
-
+           
+            translate(ele, bugsList[index].x, bugsList[index].y);
+            console.log(bugsList[index].x)
         }, 100)
     }
-    function translate(ele) {
-
-
+    function translate(ele, x, y) {
         if (x + dx > wrapperWidth - bugSize || x + dx < bugSize) {
+           
             dx = -dx;
         }
         if (y + dy > wrapperHeight - bugSize || y + dy <= -50) {
@@ -46,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         y += dy;
         ele.style.left = x + "px";
         ele.style.top = y + "px";
+        
     }
 });
 
