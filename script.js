@@ -72,6 +72,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                {
                  bug.style.display = "none";
                }
+               document.getElementById("message-area").style.display = "none";
                 endScreen();
 
             }
@@ -118,6 +119,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function endScreen()
     {
         alert("You splattered us all")
+        alert("That's it MAMA'S ANGRY. WARNING DON'T CLICK IF SCARED OF BUGS");
+        wrapper.style.backgroundImage = "url('https://media.wired.com/photos/5a99cd5b183e80505b186cf8/master/pass/42-33047306.jpg')";
+    
     }
 });
 
