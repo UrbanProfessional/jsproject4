@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             translate(ele, bugsList[index]);
             if (totalDeaths == 15)
             {
+                document.getElementById("message-area").innerHTML = "You splattered us all";
                for (let interval of intervals)
                {
                  clearInterval(interval);
@@ -72,13 +73,19 @@ document.addEventListener("DOMContentLoaded", function (event) {
                {
                  bug.style.display = "none";
                }
-               document.getElementById("message-area").style.display = "none";
-                endScreen();
+            
+               setTimeout(function()
+               {
+                    document.getElementById("message-area").style.display = "none";
+                    endScreen();
+               }, 3000);
+                
 
             }
         }, 100)
         intervals.push(timer);
     }
+   
     function sayComment()
     {
         
@@ -118,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     function endScreen()
     {
-        document.getElementById("message-area").innerHTML = "You splattered us all";
+        
         alert("That's it MAMA'S ANGRY. WARNING DON'T CLICK IF SCARED OF BUGS");
         wrapper.style.backgroundImage = "url('https://media.wired.com/photos/5a99cd5b183e80505b186cf8/master/pass/42-33047306.jpg')";
     
