@@ -1,135 +1,57 @@
-
-
-document.addEventListener("DOMContentLoaded", function (event) {
-    let bugs = document.getElementsByClassName('bugs');
-    var wrapper = document.getElementsByClassName('wrapper')[0];
-    var bugSize = 100;
-    var wrapperWidth = parseInt(getComputedStyle(wrapper).width.split('px')[0], 10);
-    var wrapperHeight = parseInt(getComputedStyle(wrapper).height.split('px')[0], 10);
-    var dx = 20;
-    var dy = -20;
-    var bugsList = [];
-    var intervals = [];
-    var totalDeaths = 0;
-    var i = 0;
-    var defiant = ["YOU SUCK", "GET GUD", "HAHA", "EZ", "YOU CAN'T CATCH US", "CALL US THE FLASH", "YOUR SLOWER THAN A TURTLE", 
-                   "ARE YOU EVEN A GAMER!", "WOW YOU ARE BAD", "ARE YOU A CHILD??", "YOU SHOULD CALL SOME BACKUP CAUSE YOU SUCK!"];
-    var pleading = ["KING PLEASE!", "WE'LL GIVE YOU A THOUSAND DOLLARS", "IF YOU STOP, WE'LL BE YOUR BEST FRIENDS",
-                    "WAIT A MINUTE PLEASE!!!", "WE DIDN'T MEAN WHAT WE SAID BEFORE", "PLEASE SPARE US", "KING I BEG YOU HIGHNESS",
-                    "IF YOU STOP, WE'LL WORSHIP YOU!"]
-    for (let bug of bugs) {
-
-        bug.addEventListener('click', function (event) {
-            splat(this);
-
+function initial() {
+    document.getElementById('start').style.display = "none";
+    scouts = document.getElementsByClassName('scouts');
+    stage = document.getElementById('cont');
+    intervals = [];
+    totalDeaths = 0;
+    i = 0;
+    rude = ["BONK!", "BOINK!", "NEED A DISPENSER HERE!", "GG NO RE!", "IM RUNNING CIRCLES AROUND YAH!", 
+                   "Knucklehead!"];
+    scared = ["HELP!", "DOC COME ON MAN!", "MEDIC!",
+                    "AAAH!", "NEED SOME HELP OVER HERE!", "AGHH!"]
+    for (let scout of scouts) {
+        scout.style.left = Math.random() * 90 + "%";
+        scout.style.top = Math.random() * 55 + "%";
+        scout.addEventListener('click', function (event) {
+            kill(this);
         });
-       
-        let bugObject = {
-            x: wrapperWidth / 2,
-            y: wrapperHeight - 200,
-            index: i
+    }
+
+    function kill(obj) {
+        obj.src = "img/blood.png";
+        totalDeaths++;
+        say();
+        document.getElementById('text').style.display = "block";
+        obj.style.pointerEvents = "none";
+        scoutEv();
+    }
+    
+    function scoutEv() { 
+        if (totalDeaths > 14) {
+            document.getElementById("text").innerHTML = "You fragged all the scouts!";
+            setTimeout(finished, 2000);
         }
-        if (i >= 1)
-        {
-            bugObject = {
-                x: (wrapperWidth / 2) - (Math.floor(Math.random() * 600)),
-                y: bugsList[i - 1].y - (Math.floor(Math.random() * 10 + 30)),
-                index: i
-            }
-        }
-        bugsList.push(bugObject);
-       
-        moveBug(bug, bugObject.index);
-        i++;
     }
    
-
-    function splat(ele) {
-        if (!ele.src.includes("assets/bug-splatter.png"))
-        {
-            ele.src = "assets/bug-splatter.png";
-            totalDeaths++;
-            sayComment();
-            document.getElementById('message-area').style.opacity = 1;
-            setTimeout(function () {
-                ele.style.display = "none";
-            }, 3000)
-        }
-        
-    }
-    function moveBug(ele, index) { 
-        
-        var timer = setInterval(() => {
-          
-            translate(ele, bugsList[index]);
-            if (totalDeaths == 15)
-            {
-                document.getElementById("message-area").innerHTML = "You splattered us all";
-               for (let interval of intervals)
-               {
-                 clearInterval(interval);
-               }  
-               for (let bug of bugs)
-               {
-                 bug.style.display = "none";
-               }
-            
-               setTimeout(function()
-               {
-                    document.getElementById("message-area").style.display = "none";
-                    endScreen();
-               }, 3000);
-                
-
-            }
-        }, 100)
-        intervals.push(timer);
-    }
-   
-    function sayComment()
+    function say()
     {
         
         if (totalDeaths <= 8)
         {
-            let rnd = Math.floor(Math.random() * defiant.length);
-            
-           
-            document.getElementById('message-area').innerHTML = defiant[rnd];
-            defiant.splice(rnd, 1);
+            let rnd = Math.floor(Math.random() * rude.length);
+            document.getElementById('text').innerHTML = rude[rnd];;
         }
         else
         {
-            let rnd = Math.floor(Math.random() * pleading.length);
-            document.getElementById('message-area').innerHTML = pleading[rnd];
-            pleading.splice(rnd, 1);
+            let rnd = Math.floor(Math.random() * scared.length);
+            document.getElementById('text').innerHTML = scared[rnd];
         }
         
     }
-    function translate(ele, bug) {
 
-        if (!ele.src.includes("assets/bug-splatter.png"))
-        {
-            if (bug.x + dx > wrapperWidth - bugSize || bug.x + dx < bugSize) {
-            
-                dx = -dx;
-            }
-            if (bug.y + dy > wrapperHeight - bugSize || bug.y + dy <= bugSize - 100) {
-                dy = -dy;
-            }
-            bug.x += dx;
-            bug.y += dy;
-            ele.style.left = bug.x + "px";
-            ele.style.top = bug.y + "px";
-        }
-       
+    function finished() {
+        document.getElementById('drip').style.display = "block";
     }
-    function endScreen()
-    {
-        
-        alert("That's it MAMA'S ANGRY. WARNING DON'T CLICK IF SCARED OF BUGS");
-        wrapper.style.backgroundImage = "url('https://media.wired.com/photos/5a99cd5b183e80505b186cf8/master/pass/42-33047306.jpg')";
-    
-    }
-});
+}
 
 
